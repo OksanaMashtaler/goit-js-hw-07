@@ -1,81 +1,53 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
-
 const galleryRef = document.querySelector(".gallery");
 
-function createGalleryMarkup(galleryItems) {
-  return galleryItems
+function createGalleryMarkup(item) {
+  return item
     .map(
-      ({ preview, original, description }) =>
+      (i) =>
         ` <div class="gallery__item">
- <a class="gallery__link" href="${original}">
-     <img
-     class="gallery__image"
-     src="${preview}"
-     data-source="${original}"
-     alt="${description}"
-     />
- </a>
- </div> `
+            <a class="gallery__link" href="${i.original}">
+              <img
+              class="gallery__image"
+              src="${i.preview}"
+              data-source="${i.original}"
+              alt="${i.description}"
+              />
+            </a>
+          </div> `
     )
     .join(" ");
 }
+
 const galleryMarkup = createGalleryMarkup(galleryItems);
-galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);
-
-// const onClickImage = (evt) => {
-//   evt.preventDefault();
-//   if (evt.target.nodeName !== "IMG") {
-//     return;
-//   }
-//   const instance = basicLightbox.create(
-//     `<img src="${evt.target.dataset.source}"/>`
-//   );
-//   instance.show();
-//   const closeButton = (evt) => {
-//     if (evt.code === "Escape") {
-//       instance.close();
-//     }
-//   };
-//   document.addEventListener("keydown", closeButton, { once: true });
-// };
-// galleryRef.addEventListener("click", onClickImage);
-
-// =============================================================================
-// galleryRef.addEventListener("click", onClick);
-// function onClick(evt) {
-//   preventDefault();
-//   if (evt.target.nodeName !== "IMG") {
-//     return;
-//   }
-//   const instance = basicLightbox.create(
-//     `<img src="${evt.target.dataset.source}"/>`
-//   );
-//   instance.show();
-
-//   galleryRef.addEventListener("keydown", (evt) => {
-//     if (evt.code === "Escape") {
-//       instance.close();
-//     }
-//   });
-// }
+galleryRef.addEventListener("click", onClick);
 
 function onClick(evt) {
   evt.preventDefault();
-  const instance = basicLightbox.create(
-    `<img src="${evt.target.dataset.source}"/>`
-  );
+
   if (evt.target.nodeName !== "IMG") {
     return;
   }
+
+  showInstance(evt);
+}
+
+function showInstance(evt) {
+  const instance = basicLightbox.create(
+    `<img src="${evt.target.dataset.source}"/>`
+  );
+
   instance.show();
   const closeButton = (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
+    if (evt.code !== "Escape") {
+      return;
     }
+    instance.close();
   };
+
   document.addEventListener("keydown", closeButton, { once: true });
 }
-galleryRef.addEventListener("click", onClick);
+
+galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);

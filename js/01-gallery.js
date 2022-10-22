@@ -30,7 +30,6 @@ function onClick(evt) {
   if (evt.target.nodeName !== "IMG") {
     return;
   }
-
   showInstance(evt);
 }
 
@@ -40,11 +39,20 @@ function showInstance(evt) {
   );
 
   instance.show();
+
   const closeButton = (evt) => {
     if (evt.code !== "Escape") {
       return;
     }
-    instance.close();
+
+    if (instance.show()) {
+      galleryRef.addEventListener("keydown", closeButton);
+    }
+
+    if (evt.code) {
+      instance.close();
+      galleryRef.removeEventListener("keydown", closeButton);
+    }
   };
 
   document.addEventListener("keydown", closeButton, { once: true });

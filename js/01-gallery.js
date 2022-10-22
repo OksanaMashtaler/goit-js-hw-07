@@ -45,17 +45,15 @@ function showInstance(evt) {
       return;
     }
 
-    if (instance.show()) {
-      galleryRef.addEventListener("keydown", closeButton);
-    }
-
-    if (evt.code) {
+    if (evt.code === "Escape") {
       instance.close();
       galleryRef.removeEventListener("keydown", closeButton);
     }
   };
 
-  document.addEventListener("keydown", closeButton, { once: true });
+  if (instance.show()) {
+    galleryRef.addEventListener("keydown", closeButton);
+  }
 }
 
 galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);

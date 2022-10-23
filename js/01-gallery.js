@@ -42,18 +42,16 @@ function showInstance(evt) {
 
   const closeButton = (evt) => {
     if (evt.code !== "Escape") {
+      console.log("dd");
       return;
     }
 
     if (evt.code === "Escape") {
       instance.close();
-      galleryRef.removeEventListener("keydown", closeButton);
-    }
-  };
-
-  if (instance.show()) {
-    galleryRef.addEventListener("keydown", closeButton);
-  }
+      document.removeEventListener("keydown", closeButton);
+    };
+    
+  document.addEventListener("keydown", closeButton);
 }
 
 galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);
